@@ -1,0 +1,22 @@
+name = "hub-api"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+REPOS = "Abscissa24/CCU,Abscissa24/RT"
+SITE_URL = "https://abscissa.co.za/"
+# Production: verified domain at resend.com
+MAIL_FROM = "Software Hub <updates@abscissa.co.za>"
+
+# Required secrets (set with: wrangler secret put <NAME>):
+#   ADMIN_TOKEN  - long random string for the /admin dashboard
+#   RESEND_API_KEY - Resend API key (required for "Get notified of new versions")
+# Optional secret:
+#   GITHUB_TOKEN - a GitHub token with no permissions, for a higher request limit
+
+[[kv_namespaces]]
+binding = "HUB"
+id = "4372f00aae9b4e1191a633f1afe7ba53"
+
+[triggers]
+crons = ["0 * * * *"]   # check for new releases every hour
