@@ -490,6 +490,11 @@ function route(){
   window.scrollTo(0,0);
   if(a)loadReviews(a);
 }
+
+// Render the initial page and re-render when the hash route changes.
+window.addEventListener("hashchange", route);
+route();
+
 APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
 
   </script>
