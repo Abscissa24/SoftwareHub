@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="og.png" alt="Software Hub logo" width="160" />
+<img src="og.png" alt="Software Hub logo" width="320" />
 
 # Software Hub
 
-**Simple, free-to-try apps for Windows, Linux and Android.**
+**Simple, free apps for Windows, Linux and Android.**
 
 Small, focused tools published directly by their author. Pick one and download it in a click.
 
