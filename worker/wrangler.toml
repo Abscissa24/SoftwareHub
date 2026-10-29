@@ -10,9 +10,6 @@ MAIL_FROM = "Software Hub <updates@abscissa.co.za>"
 
 # Required secrets (set with: wrangler secret put <NAME>):
 #   ADMIN_TOKEN  - long random string for the /admin dashboard
-#   GITHUB_WEBHOOK_SECRET - secret matching each repo's GitHub webhook (point the
-#                          webhook at <API_BASE>/github-webhook, JSON, "Release
-#                          events" only; emails go out immediately on publish)
 #   RESEND_API_KEY - Resend API key (required for "Get notified of new versions")
 # Optional secret:
 #   GITHUB_TOKEN - a GitHub token with no permissions, for a higher request limit
@@ -22,6 +19,4 @@ binding = "HUB"
 id = "4372f00aae9b4e1191a633f1afe7ba53"
 
 [triggers]
-# Fallback check on the hour; emails also go out immediately via the GitHub
-# release webhook (/github-webhook) when GITHUB_WEBHOOK_SECRET is set.
 crons = ["0 * * * *"]   # check for new releases every hour
