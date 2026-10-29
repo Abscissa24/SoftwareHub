@@ -72,9 +72,6 @@ tr:last-child td{border-bottom:0}
 code{font:.85em ui-monospace,Menlo,Consolas,monospace}
 footer{margin-top:3rem;padding-top:1rem;border-top:2px solid #d8e3e0;font-size:.85rem;color:#4b5d5b}
 a{color:#0b6a70}
-.btn-send{display:inline-block;background:#0b6a70;color:#fff;border:0;border-radius:999px;padding:.4rem 1rem;font-size:.88rem;cursor:pointer;font-family:inherit}
-.btn-send:hover{background:#095256}
-@media(prefers-color-scheme:dark){.btn-send{background:#5fd0bd;color:#0f1514}.btn-send:hover{background:#7cd8c7}}
 @media(prefers-color-scheme:dark){body{background:#0f1514;color:#e4efed}header,footer{border-color:#2a3a37}.item,.tablewrap{background:#16201f;border-color:#2a3a37}.meta span{background:#22302e}.meta .date{background:none}.meta,.email,th,footer{color:#a9c0bb}th{background:#1b2826}th,td{border-color:#2a3a37}.count{background:#2a3a37}a{color:#5fd0bd}}
 </style>
 </head>
@@ -96,11 +93,10 @@ ${fbRows || '<p class="empty">No reports yet.</p>'}
   <h2>Reviews<span class="count">${revs.length}</span></h2>
   ${revRows || '<p class="empty">No reviews yet.</p>'}
   </section>
-   <footer>
-    <p>Generated ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC · <a href="/admin?token=${q}">Refresh</a> · <a href="/admin/run?token=${q}">Check for updates now</a> · <a href="/admin/send?token=${q}" class="btn-send">Send update emails now</a> · <a href="/admin/feedback?token=${q}">Reports JSON</a> · <a href="/admin/subscribers?token=${q}">Sign-ups JSON</a> · <a href="/admin/reviews?token=${q}">Reviews JSON</a></p>
-   <p class="sub"><strong>Send update emails now</strong> forces delivery to subscribers for the latest release of each app immediately, instead of waiting for the hourly check. It updates the version baseline so the cron won't send duplicates.</p>
-   <p>Showing up to 1000 entries per section. Reports and reviews are kept for 180 days.</p>
-   </footer>
+  <footer>
+  <p>Generated ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC · <a href="/admin?token=${q}">Refresh</a> · <a href="/admin/run?token=${q}">Check for updates now</a> · <a href="/admin/feedback?token=${q}">Reports JSON</a> · <a href="/admin/subscribers?token=${q}">Sign-ups JSON</a> · <a href="/admin/reviews?token=${q}">Reviews JSON</a></p>
+  <p>Showing up to 1000 entries per section. Reports and reviews are kept for 180 days.</p>
+</footer>
 </main>
 </body>
 </html>`;
@@ -130,33 +126,6 @@ async function latestRelease(env, repo) {
   return list.find((x) => !x.prerelease && !x.draft) || null;
 }
 
-async function emailSubscribers(env, repo, tag_name) {
-  const from = String(env.MAIL_FROM || "");
-  const name = repo.split("/")[1], version = tag_name.replace(/^(RT-|CCU-|v)/i, "");
-  const subs = await env.HUB.list({ prefix: `sub:${repo}:` });
-  let sent = 0, failed = 0, error = "";
-  for (const k of subs.keys) {
-    const to = k.name.split(":").slice(2).join(":");
-    const r = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, subject: `${name} ${version} is available`, text: `A new version of ${name} (${version}) is ready to download.\n\n${env.SITE_URL || ""}\n\nYou are receiving this because you asked to be notified. Reply to this email to stop.` }),
-    });
-    if (r.ok) sent++;
-    else { failed++; if (!error) error = (await r.text()).slice(0, 300); }
-  }
-  return { sent, failed, ...(error ? { error } : {}) };
-}
-
-function mailReady(env) {
-  const from = String(env.MAIL_FROM || "");
-  return Boolean(env.RESEND_API_KEY) && Boolean(from) && !/YOUR-DOMAIN/i.test(from);
-}
-
-const mailProblem = (env) => env.RESEND_API_KEY
-  ? { status: "email misconfigured", pending: true, detail: "Set MAIL_FROM to a verified sender" }
-  : { status: "email not configured", pending: true };
-
 async function runUpdates(env) {
   const out = [];
   for (const repo of repos(env)) {
@@ -164,34 +133,34 @@ async function runUpdates(env) {
       const latest = await latestRelease(env, repo);
       if (!latest) { out.push({ repo, status: "no stable release" }); continue; }
       const last = await env.HUB.get("last:" + repo);
+      const from = String(env.MAIL_FROM || "");
+      const mailReady = Boolean(env.RESEND_API_KEY) && Boolean(from) && !/YOUR-DOMAIN/i.test(from);
+      const mailProblem = () => env.RESEND_API_KEY
+        ? { status: "email misconfigured", pending: true, detail: "Set MAIL_FROM to a verified sender" }
+        : { status: "email not configured", pending: true };
       if (!last) {
-        if (!mailReady(env)) { out.push({ repo, version: latest.tag_name, ...mailProblem(env) }); continue; }
+        if (!mailReady) { out.push({ repo, version: latest.tag_name, ...mailProblem() }); continue; }
         await env.HUB.put("last:" + repo, latest.tag_name);
         out.push({ repo, status: "baseline recorded", version: latest.tag_name });
         continue;
       }
       if (last === latest.tag_name) { out.push({ repo, status: "already current", version: latest.tag_name }); continue; }
-      if (!mailReady(env)) { out.push({ repo, version: latest.tag_name, ...mailProblem(env) }); continue; }
-      const result = await emailSubscribers(env, repo, latest.tag_name);
+      if (!mailReady) { out.push({ repo, version: latest.tag_name, ...mailProblem() }); continue; }
+      const name = repo.split("/")[1], version = latest.tag_name.replace(/^(RT-|CCU-|v)/i, "");
+      const subs = await env.HUB.list({ prefix: `sub:${repo}:` });
+      let sent = 0, failed = 0, error = "";
+      for (const k of subs.keys) {
+        const to = k.name.split(":").slice(2).join(":");
+        const r = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify({ from, to, subject: `${name} ${version} is available`, text: `A new version of ${name} (${version}) is ready to download.\n\n${env.SITE_URL || ""}\n\nYou are receiving this because you asked to be notified. Reply to this email to stop.` }),
+        });
+        if (r.ok) sent++;
+        else { failed++; if (!error) error = (await r.text()).slice(0, 300); }
+      }
       await env.HUB.put("last:" + repo, latest.tag_name);
-      out.push({ repo, status: "checked", version: latest.tag_name, ...result });
-    } catch (e) {
-      out.push({ repo, status: "error", error: String(e).slice(0, 300) });
-    }
-  }
-  return out;
-}
-
-async function sendEmails(env) {
-  const out = [];
-  for (const repo of repos(env)) {
-    try {
-      const latest = await latestRelease(env, repo);
-      if (!latest) { out.push({ repo, status: "no stable release" }); continue; }
-      if (!mailReady(env)) { out.push({ repo, version: latest.tag_name, ...mailProblem(env) }); continue; }
-      const result = await emailSubscribers(env, repo, latest.tag_name);
-      await env.HUB.put("last:" + repo, latest.tag_name);
-      out.push({ repo, status: "emails sent", version: latest.tag_name, ...result });
+      out.push({ repo, status: "checked", version: latest.tag_name, sent, failed, ...(error ? { error } : {}) });
     } catch (e) {
       out.push({ repo, status: "error", error: String(e).slice(0, 300) });
     }
@@ -270,7 +239,6 @@ export default {
         }
         return json({ error: "not found" }, 404);
       }
-      if (p.length === 2 && p[1] === "send") return json(await sendEmails(env));
       // POST /admin/delete  { type: "fb"|"sub"|"rev", key: "..." }
       if (req.method === "POST" && p[0] === "admin" && p[1] === "delete") {
         if (!env.ADMIN_TOKEN || u.searchParams.get("token") !== env.ADMIN_TOKEN) return json({ error: "not found" }, 404);

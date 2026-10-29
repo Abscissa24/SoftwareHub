@@ -191,8 +191,11 @@ button.btn{border:0;font:inherit;font-weight:600;cursor:pointer}
   .admItem button.del{background:#e01418;color:#fff;border:0;padding:.3rem .8rem;border-radius:999px;font-size:.8rem;cursor:pointer}
   .admItem button.del:hover{opacity:.9}
   .admEmpty{opacity:.5;text-align:center;padding:1.5rem}
-  .admControls{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+  .admControls{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:.8rem}
   .admSearch{padding:.5rem .9rem;border-radius:999px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font-size:.9rem}
+  #adminDash .btnSend{padding:.5rem 1rem;border-radius:999px;background:var(--g);color:#fff;border:0;cursor:pointer;font-size:.85rem;white-space:nowrap}
+  #adminDash .btnSend:hover{opacity:.9}
+  #adminDash .btnSend:disabled{opacity:.6;cursor:wait}
   #adminDash .btnClose{background:none;color:var(--soft);border:0;padding:0;font-size:1.8rem;cursor:pointer;position:absolute;top:1rem;right:1rem}
   .admTable{width:100%;border-collapse:collapse;font-size:.9rem}
   .admTable th,.admTable td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--soft);font-size:.85rem}
@@ -529,10 +532,10 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
         <div class="admControls"><input class="admSearch" id="admSearchReports" placeholder="Search reports..." type="search"></div>
         <div id="admReportsList"><p class="admEmpty">Loading…</p></div>
       </div>
-      <div class="admSection" data-section="subscribers">
-        <div class="admControls"><input class="admSearch" id="admSearchSubscribers" placeholder="Search subscribers..." type="search"></div>
-        <table class="admTable"><thead><tr><th>App</th><th>Repository</th><th>Email</th><th>Signed up</th><th>Delete</th></tr></thead><tbody id="admSubscribersBody"></tbody></table>
-      </div>
+       <div class="admSection" data-section="subscribers">
+         <div class="admControls"><input class="admSearch" id="admSearchSubscribers" placeholder="Search subscribers..." type="search"><button class="btnSend" id="admSendBtn">Send update emails now</button></div>
+         <table class="admTable"><thead><tr><th>App</th><th>Repository</th><th>Email</th><th>Signed up</th><th>Delete</th></tr></thead><tbody id="admSubscribersBody"></tbody></table>
+       </div>
       <div class="admSection" data-section="reviews">
         <div class="admControls"><input class="admSearch" id="admSearchReviews" placeholder="Search reviews..." type="search"></div>
         <div id="admReviewsList"><p class="admEmpty">Loading…</p></div>
@@ -700,7 +703,29 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
            }).catch(function() { toast("Delete failed."); });
         }
       }
-    }
+     }
+   });
+
+  // Send update emails now
+  $("admSendBtn").addEventListener("click", function() {
+    if (!adminToken) return;
+    var btn = $("admSendBtn");
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    fetch(API_BASE + "/admin/run?token=" + adminToken, { headers: { "Accept": "application/json" } })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var sent = d.reduce(function(n, x) { return n + (x.sent || 0); }, 0);
+        var failed = d.reduce(function(n, x) { return n + (x.failed || 0); }, 0);
+        btn.textContent = "Sent " + sent + (failed ? " (" + failed + " failed)" : "");
+        toast(sent ? "Update emails sent to " + sent + " subscriber" + (sent > 1 ? "s" : "") + (failed ? " (" + failed + " failed)" : "") : "No new versions to email.");
+        setTimeout(function() { btn.textContent = "Send update emails now"; btn.disabled = false; }, 3000);
+      })
+      .catch(function() {
+        btn.textContent = "Send update emails now";
+        btn.disabled = false;
+        toast("Failed to send emails.");
+      });
   });
   </script>
  </body>
