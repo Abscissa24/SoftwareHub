@@ -4,7 +4,7 @@
 
 # Software Hub
 
-**Simple, free apps for Windows, Linux and Android.**
+**Simple, stylish apps for Windows, Linux and Android.**
 
 Small, focused tools published directly by their author. Pick one and download it in a click.
 
@@ -16,13 +16,13 @@ Small, focused tools published directly by their author. Pick one and download i
 
 <br />
 
-[About](#-about) · [Features](#-features) · [Development](#-development) · [License](#-license)
+[About](#-about) · [Features](#-features) · [License](#-license)
 
 </div>
 
 ---
 
-## 🏁 About
+## About
 
 Software Hub is a website that links to and helps install a collection of small desktop and mobile apps:
 
@@ -31,7 +31,7 @@ Software Hub is a website that links to and helps install a collection of small 
 
 All downloads go directly to the developer's published releases. No installers wrap the apps, no ads, no tracking — just a clean page with platform-appropriate downloads and install instructions.
 
-## ✨ Features
+## Features
 
 - **Platform detection** — Shows a big download button for your detected operating system (Windows, macOS hint, Ubuntu/Debian, Fedora, Arch, Android).
 - **Live version lists** — Reads releases directly from GitHub with a cached fallback, so the site keeps working even offline.
@@ -40,27 +40,7 @@ All downloads go directly to the developer's published releases. No installers w
 - **Requirements extraction** — Pulls "## Requirements" bullet lists from release notes.
 - **Install guide** — Shows the exact command or steps for your distro on Linux.
 
-## 🛠 Development
-
-- `index.html` is a single self-contained file (HTML + CSS + JS).
-- `worker/worker.js` is an optional Cloudflare Worker that caches releases, collects sign-ups, problem reports, and reviews.
-- `worker/wrangler.toml` configures the Worker (repos, KV namespace, cron trigger).
-- `.gitignore` protects local dev files.
-- `screenshots/` holds images referenced by app data.
-- `og.png` is the preview image shown when someone shares your link.
-
-```bash
-# Serve locally for testing
-npx serve .        # or any static server
-
-# Deploy the worker
-cd worker
-wrangler deploy
-```
-
-## 📄 License
-
-Chess Coach Utility and Remuneration Tracker are provided by their author. Unless an app's own licence screen says otherwise:
+## License
 
 - You may download, install and use a copy for your own purposes.
 - You may not sell, share, rebrand or reverse engineer the apps without written permission.
