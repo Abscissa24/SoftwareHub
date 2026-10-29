@@ -507,7 +507,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
 
   </script>
 
-  <div id="adminModal" class="hidden" role="dialog" aria-modal="true" aria-label="Admin login">
+  <div id="adminModal" hidden role="dialog" aria-modal="true" aria-label="Admin login">
     <div class="adm">
       <h2>Admin login</h2>
       <input type="password" id="adminPass" placeholder="Enter admin token" autocomplete="off">
@@ -516,7 +516,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
       <div class="err" id="adminErr"></div>
     </div>
   </div>
-  <div id="adminDash" class="hidden" role="dialog" aria-modal="true" aria-label="Admin dashboard">
+  <div id="adminDash" hidden role="dialog" aria-modal="true" aria-label="Admin dashboard">
     <button class="btnClose" id="adminCloseDash" aria-label="Close">×</button>
     <div class="admc">
       <h2>Admin dashboard</h2>
