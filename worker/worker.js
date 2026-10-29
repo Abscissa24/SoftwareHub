@@ -1,7 +1,8 @@
 // Software Hub API: a small Cloudflare Worker.
 // It (1) caches your release list so the site never hits GitHub's request limit,
 // (2) collects "notify me" email sign-ups, problem reports, and reviews, and
-// (3) optionally emails subscribers when you publish a new stable release.
+// (3) emails subscribers when you publish a new stable release. A GitHub release
+// webhook emails them immediately; the hourly scheduled job is a fallback.
 const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET,POST,OPTIONS", "Access-Control-Allow-Headers": "Content-Type" };
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { ...CORS, "Content-Type": "application/json" } });
 const repos = (env) => (env.REPOS || "").split(",").map((s) => s.trim()).filter(Boolean);
@@ -126,6 +127,34 @@ async function latestRelease(env, repo) {
   return list.find((x) => !x.prerelease && !x.draft) || null;
 }
 
+async function emailSubscribers(env, repo, tag) {
+  const from = String(env.MAIL_FROM || "");
+  const name = repo.split("/")[1], version = tag.replace(/^(RT-|CCU-|v)/i, "");
+  const subs = await env.HUB.list({ prefix: `sub:${repo}:` });
+  let sent = 0, failed = 0, error = "";
+  for (const k of subs.keys) {
+    const to = k.name.split(":").slice(2).join(":");
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ from, to, subject: `${name} ${version} is available`, text: `A new version of ${name} (${version}) is ready to download.\n\n${env.SITE_URL || ""}\n\nYou are receiving this because you asked to be notified. Reply to this email to stop.` }),
+    });
+    if (r.ok) sent++;
+    else { failed++; if (!error) error = (await r.text()).slice(0, 300); }
+  }
+  return { sent, failed, ...(error ? { error } : {}) };
+}
+
+// Verify a GitHub webhook signature (sha256 HMAC over the raw request body).
+async function verifyGitHubSig(sig, secret, body) {
+  if (!sig || !secret || !sig.startsWith("sha256=")) return false;
+  const expected = sig.slice(7).toLowerCase();
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const buf = await crypto.subtle.sign("HMAC", key, body);
+  const got = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+  return got === expected;
+}
+
 async function runUpdates(env) {
   const out = [];
   for (const repo of repos(env)) {
@@ -206,6 +235,31 @@ export default {
         if (!message || rating < 1 || rating > 5 || !repos(env).includes(repo)) return json({ error: "invalid" }, 400);
         await env.HUB.put(`rev:${repo}:${Date.now()}:${crypto.randomUUID().slice(0, 6)}`, JSON.stringify({ app: clip(b.app, 80), rating, message, email: clip(b.email, 200) }), { expirationTtl: 60 * 60 * 24 * 180 });
         return json({ ok: true });
+      }
+      // POST /github-webhook  - GitHub "release" webhook: email subscribers immediately
+      if (req.method === "POST" && p[0] === "github-webhook") {
+        const secret = env.GITHUB_WEBHOOK_SECRET || "";
+        const sig = req.headers.get("x-hub-signature-256") || "";
+        const raw = await req.arrayBuffer();
+        if (!(await verifyGitHubSig(sig, secret, raw))) return json({ error: "forbidden" }, 403);
+        if (req.headers.get("x-github-event") !== "release") return json({ ok: true });
+        let payload;
+        try { payload = JSON.parse(new TextDecoder().decode(raw)); } catch { return json({ error: "invalid payload" }, 400); }
+        if (payload.action !== "published") return json({ ok: true });
+        const repo = payload.repository && payload.repository.full_name;
+        if (!repo || !repos(env).includes(repo)) return json({ error: "unknown repo" }, 404);
+        if (payload.release && payload.release.prerelease) return json({ ok: true });
+        const tag = payload.release && payload.release.tag_name;
+        if (!tag) return json({ error: "no tag" }, 400);
+        const from = String(env.MAIL_FROM || "");
+        const mailReady = Boolean(env.RESEND_API_KEY) && Boolean(from) && !/YOUR-DOMAIN/i.test(from);
+        if (!mailReady) return json({ repo, version: tag, status: "email not configured", pending: true });
+        const last = await env.HUB.get("last:" + repo);
+        if (!last) { await env.HUB.put("last:" + repo, tag); return json({ repo, status: "baseline recorded", version: tag }); }
+        if (last === tag) return json({ repo, status: "already current", version: tag });
+        const result = await emailSubscribers(env, repo, tag);
+        await env.HUB.put("last:" + repo, tag);
+        return json({ ok: true, repo, version: tag, ...result });
       }
       // GET /reviews/<owner>/<repo>
       if (req.method === "GET" && p[0] === "reviews" && p.length === 3) {
