@@ -45,4 +45,3 @@ All downloads go directly to the developer's published releases. No installers w
 - You may download, install and use a copy for your own purposes.
 - You may not sell, share, rebrand or reverse engineer the apps without written permission.
 - Some apps or features may need a licence or activation code.
-- The apps are provided "as is", without any warranty.
