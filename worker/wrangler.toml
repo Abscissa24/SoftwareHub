@@ -13,6 +13,11 @@ MAIL_FROM = "Software Hub <updates@abscissa.co.za>"
 #   RESEND_API_KEY - Resend API key (required for "Get notified of new versions")
 # Optional secret:
 #   GITHUB_TOKEN - a GitHub token with no permissions, for a higher request limit
+#
+# Admin dashboard (/admin?token=...) includes a "Send update emails now" button
+# that force-sends emails for the latest releases immediately, then updates the
+# version baseline so the hourly cron won't double-email. The cron itself still
+# runs every hour as the default check.
 
 [[kv_namespaces]]
 binding = "HUB"
