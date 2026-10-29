@@ -257,12 +257,14 @@ function latest(a){var rels=Array.isArray(a.rels)?a.rels:[];return rels.filter(f
 function sel(a){var rels=Array.isArray(a.rels)?a.rels:[];return rels.filter(function(r){return r.tag===a.sel})[0]||latest(a)}
 function plats(a){var r=a.soon?null:latest(a);return r?GROUPS.filter(function(g){return KINDS.some(function(k){return k[1]===g&&r.b&&r.b[k[0]]})}):[]}
 function setRels(a,d,st,quiet){a.rels=d.filter(function(r){return!r.draft}).map(mapRel);a.state=st;if(!quiet)paint()}
-function load(a){
+function load(a,refresh){
   var key="hub-rel-"+a.repo,c=null;
-  try{c=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
-  if(c&&Date.now()-c.t<12e4){setRels(a,c.d,"live");return}
+  if(!refresh){
+    try{c=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
+    if(c&&Date.now()-c.t<12e4){setRels(a,c.d,"live");return}
+  }
   var ac=new AbortController(),to=setTimeout(function(){ac.abort()},7000);
-  fetch((API_BASE?API_BASE+"/releases/"+a.repo:"https://api.github.com/repos/"+a.repo+"/releases?per_page=40"),{headers:{Accept:"application/vnd.github+json"},signal:ac.signal})
+  fetch((API_BASE?API_BASE+"/releases/"+a.repo+(refresh?"?refresh=1":""):"https://api.github.com/repos/"+a.repo+"/releases?per_page=40"),{headers:{Accept:"application/vnd.github+json"},signal:ac.signal})
    .then(function(r){if(!r.ok)throw 0;return r.json()})
    .then(function(d){clearTimeout(to);if(!Array.isArray(d))throw 0;
      d=d.filter(function(r){return!r.draft}).map(function(r){return{tag_name:r.tag_name,prerelease:r.prerelease,published_at:r.published_at,html_url:r.html_url,body:r.body,assets:(r.assets||[]).map(function(x){return{name:x.name,size:x.size,browser_download_url:x.browser_download_url,digest:x.digest,download_count:x.download_count}})}});
@@ -706,12 +708,13 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
      }
    });
 
-  // Send update emails now
+  // Send update emails now — force-checks GitHub for new releases, emails
+  // subscribers if any are found, then refreshes the displayed release data.
   $("admSendBtn").addEventListener("click", function() {
     if (!adminToken) return;
     var btn = $("admSendBtn");
     btn.disabled = true;
-    btn.textContent = "Sending…";
+    btn.textContent = "Checking…";
     fetch(API_BASE + "/admin/run?token=" + adminToken, { headers: { "Accept": "application/json" } })
       .then(function(r) { return r.json(); })
       .then(function(d) {
@@ -719,7 +722,15 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
         var failed = d.reduce(function(n, x) { return n + (x.failed || 0); }, 0);
         btn.textContent = "Sent " + sent + (failed ? " (" + failed + " failed)" : "");
         toast(sent ? "Update emails sent to " + sent + " subscriber" + (sent > 1 ? "s" : "") + (failed ? " (" + failed + " failed)" : "") : "No new versions to email.");
-        setTimeout(function() { btn.textContent = "Send update emails now"; btn.disabled = false; }, 3000);
+        btn.disabled = false;
+        // Force-refresh release data on the website immediately
+        APPS.forEach(function(a) {
+          if (!a.soon) {
+            try { localStorage.removeItem("hub-rel-" + a.repo); } catch(e) {}
+            load(a, true);
+          }
+        });
+        setTimeout(function() { btn.textContent = "Send update emails now"; }, 3000);
       })
       .catch(function() {
         btn.textContent = "Send update emails now";

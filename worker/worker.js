@@ -173,12 +173,13 @@ export default {
     const u = new URL(req.url), p = u.pathname.split("/").filter(Boolean);
     if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
     try {
-      // GET /releases/<owner>/<repo>  (cached for 5 minutes)
+      // GET /releases/<owner>/<repo>  (cached; ?refresh=1 bypasses cache)
       if (req.method === "GET" && p[0] === "releases" && p.length === 3) {
         const repo = p[1] + "/" + p[2];
         if (!repos(env).includes(repo)) return json({ error: "unknown repo" }, 404);
+        const refresh = u.searchParams.get("refresh") === "1";
         const key = new Request(u.origin + "/cache/" + repo);
-        let res = await caches.default.match(key);
+        let res = refresh ? null : await caches.default.match(key);
         if (!res) {
           res = new Response(JSON.stringify(await releases(env, repo)), { headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" } });
           ctx.waitUntil(caches.default.put(key, res.clone()));
