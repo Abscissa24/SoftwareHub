@@ -1,0 +1,16 @@
+# Cloudflare Worker local dev files (contain account ID and email in .wrangler/cache/)
+worker/.wrangler/
+
+# Unrelated local files
+auth/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
