@@ -97,7 +97,7 @@ ${fbRows || '<p class="empty">No reports yet.</p>'}
   ${revRows || '<p class="empty">No reviews yet.</p>'}
   </section>
    <footer>
-   <p>Generated ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC · <a href="/admin?token=${q}">Refresh</a> · <a href="/admin/run?token=${q}">Check for updates now</a> · <form method="POST" action="/admin/send?token=${q}" style="display:inline"><button type="submit" class="btn-send">Send update emails now</button></form> · <a href="/admin/feedback?token=${q}">Reports JSON</a> · <a href="/admin/subscribers?token=${q}">Sign-ups JSON</a> · <a href="/admin/reviews?token=${q}">Reviews JSON</a></p>
+    <p>Generated ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC · <a href="/admin?token=${q}">Refresh</a> · <a href="/admin/run?token=${q}">Check for updates now</a> · <a href="/admin/send?token=${q}" class="btn-send">Send update emails now</a> · <a href="/admin/feedback?token=${q}">Reports JSON</a> · <a href="/admin/subscribers?token=${q}">Sign-ups JSON</a> · <a href="/admin/reviews?token=${q}">Reviews JSON</a></p>
    <p class="sub"><strong>Send update emails now</strong> forces delivery to subscribers for the latest release of each app immediately, instead of waiting for the hourly check. It updates the version baseline so the cron won't send duplicates.</p>
    <p>Showing up to 1000 entries per section. Reports and reviews are kept for 180 days.</p>
    </footer>
@@ -270,11 +270,7 @@ export default {
         }
         return json({ error: "not found" }, 404);
       }
-      // POST /admin/send  (force-send update emails for latest releases now)
-      if (req.method === "POST" && p[0] === "admin" && p[1] === "send") {
-        if (!env.ADMIN_TOKEN || u.searchParams.get("token") !== env.ADMIN_TOKEN) return json({ error: "not found" }, 404);
-        return json(await sendEmails(env));
-      }
+      if (p.length === 2 && p[1] === "send") return json(await sendEmails(env));
       // POST /admin/delete  { type: "fb"|"sub"|"rev", key: "..." }
       if (req.method === "POST" && p[0] === "admin" && p[1] === "delete") {
         if (!env.ADMIN_TOKEN || u.searchParams.get("token") !== env.ADMIN_TOKEN) return json({ error: "not found" }, 404);
