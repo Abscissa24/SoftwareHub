@@ -198,7 +198,6 @@ button.btn{border:0;font:inherit;font-weight:600;cursor:pointer}
   .admTable th,.admTable td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--soft);font-size:.85rem}
   .admTable th{color:var(--soft);text-transform:uppercase;font-size:.75rem}
   .admTable td code{background:var(--soft);padding:.1rem .4rem;border-radius:6px}
-  .admTruncate{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   </style>
 </head>
 <body>
@@ -644,7 +643,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
       $("admReportsList").innerHTML = items.length ? items.map(function(r) {
         var parts = String(r.key || "").split(":");
         var when = parts[1] ? fmtDate(parseInt(parts[1])) : "";
-        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span>' + (r.version?'<span>v'+esc(r.version)+'</span>':'') + (r.os?'<span>'+esc(r.os)+'</span>':'') + '<span class="date">' + esc(when) + '</span></div><div class="msg admTruncate">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'No email') + '</div><button class="del" data-type="fb" data-key="'+esc(r.key)+'">Delete</button></div>';
+        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span>' + (r.version?'<span>v'+esc(r.version)+'</span>':'') + (r.os?'<span>'+esc(r.os)+'</span>':'') + '<span class="date">' + esc(when) + '</span></div><div class="msg">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'No email') + '</div><button class="del" data-type="fb" data-key="'+esc(r.key)+'">Delete</button></div>';
       }).join("") : '<p class="admEmpty">No reports match.</p>';
     } else if (tab === "subscribers") {
       var s = $("admSearchSubscribers").value.toLowerCase();
@@ -669,7 +668,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
         var when = parts[2] ? fmtDate(parseInt(parts[2])) : "";
         var stars = "";
         for (var i = 0; i < 5; i++) stars += i < (r.rating||0) ? "★" : "☆";
-        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span><code>' + esc(repo) + '</code><span style="color:#ffd43b">' + stars + '</span><span class="date">' + esc(when) + '</span></div><div class="msg admTruncate">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'Anonymous') + '</div><button class="del" data-type="rev" data-key="'+esc(r.key)+'">Delete</button></div>';
+        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span><code>' + esc(repo) + '</code><span style="color:#ffd43b">' + stars + '</span><span class="date">' + esc(when) + '</span></div><div class="msg">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'Anonymous') + '</div><button class="del" data-type="rev" data-key="'+esc(r.key)+'">Delete</button></div>';
       }).join("") : '<p class="admEmpty">No reviews match.</p>';
     }
   }
