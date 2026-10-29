@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="og.png" alt="Software Hub logo" width="320" />
+<img src="og.png" alt="Software Hub logo" width="100%" style="max-width: 100%; height: auto;" />
 
 # Software Hub
 
