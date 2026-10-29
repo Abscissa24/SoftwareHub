@@ -251,9 +251,9 @@ function mapRel(r){var b={};
   KINDS.forEach(function(k){var x=(r.assets||[]).filter(function(a){return k[4].test(a.name)})[0];
     if(x)b[k[0]]={u:x.browser_download_url,n:x.name,s:fmtSize(x.size),h:(x.digest||"").replace(/^sha256:/,"")}});
   return{tag:r.tag_name,v:String(r.tag_name).replace(/^(RT-|CCU-|v)/i,""),pre:!!r.prerelease,date:r.published_at,url:r.html_url,body:r.body||"",b:b,dc:(r.assets||[]).reduce(function(s,a){return s+(a.download_count||0)},0)}}
-function latest(a){return a.rels.filter(function(r){return!r.pre})[0]||a.rels[0]}
-function sel(a){return a.rels.filter(function(r){return r.tag===a.sel})[0]||latest(a)}
-function plats(a){var r=a.soon?null:latest(a);return r?GROUPS.filter(function(g){return KINDS.some(function(k){return k[1]===g&&r.b[k[0]]})}):[]}
+function latest(a){var rels=Array.isArray(a.rels)?a.rels:[];return rels.filter(function(r){return!r.pre})[0]||rels[0]}
+function sel(a){var rels=Array.isArray(a.rels)?a.rels:[];return rels.filter(function(r){return r.tag===a.sel})[0]||latest(a)}
+function plats(a){var r=a.soon?null:latest(a);return r?GROUPS.filter(function(g){return KINDS.some(function(k){return k[1]===g&&r.b&&r.b[k[0]]})}):[]}
 function setRels(a,d,st,quiet){a.rels=d.filter(function(r){return!r.draft}).map(mapRel);a.state=st;if(!quiet)paint()}
 function load(a){
   var key="hub-rel-"+a.repo,c=null;
@@ -490,8 +490,16 @@ function route(){
   window.scrollTo(0,0);
   if(a)loadReviews(a);
 }
+// Seed release data before the first render. This prevents the homepage
+// from crashing when a release fetch/cache has not completed yet.
+APPS.forEach(function(a){
+  if(!Array.isArray(a.rels)){
+    a.rels=(SNAP[a.repo]||[]).filter(function(r){return !r.draft}).map(mapRel);
+  }
+  if(!a.state)a.state="fallback";
+});
 
-// Render the initial page and re-render when the hash route changes.
+// Render immediately, then keep hash-based navigation in sync.
 window.addEventListener("hashchange", route);
 route();
 
