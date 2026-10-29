@@ -164,41 +164,64 @@ button.btn{border:0;font:inherit;font-weight:600;cursor:pointer}
 .soon{opacity:.75;border-style:dashed}.soonp{margin:-2.5rem 0 3rem;opacity:.7}
 
   /* ===== Admin console ===== */
-  #adminModal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;color:#fff}
+  #adminModal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:1.5rem;color:#fff;backdrop-filter:blur(2px)}
   #adminModal.hidden{display:none}
-  #adminModal .adm{max-width:420px;width:100%;background:#16201f;border:2px solid var(--soft);border-radius:20px;padding:1.8rem}
+  #adminModal .adm{max-width:420px;width:100%;background:linear-gradient(160deg,#243231,#4b5d5b);border:2px solid var(--soft);border-radius:20px;padding:1.8rem;box-shadow:0 30px 60px rgba(0,0,0,.5)}
   #adminModal h2{font-size:1.4rem;margin:0 0 1rem}
-  #adminModal input{padding:.65rem 1rem;border-radius:12px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font:inherit;width:100%;margin-bottom:1rem}
-  #adminModal .btnAdm{padding:.6rem 1.2rem;border-radius:999px;background:var(--g);color:#fff;font-weight:600;border:0;width:100%;margin-bottom:.6rem}
-  #adminModal .btnCancel{background:none;color:var(--soft)}
+  #adminModal input{padding:.65rem 1rem;border-radius:12px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font:inherit;width:100%;margin-bottom:1rem;font-size:1rem}
+  #adminModal input:focus{border-color:var(--mid);outline:none}
+  #adminModal .btnAdm{padding:.6rem 1.2rem;border-radius:999px;background:var(--g);color:#fff;font-weight:600;border:0;width:100%;margin-bottom:.6rem;font-size:.95rem;transition:transform .1s,box-shadow .2s}
+  #adminModal .btnAdm:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  #adminModal .btnCancel{background:rgba(255,255,255,.08);color:var(--soft);border:1px solid var(--soft);backdrop-filter:blur(2px)}
+  #adminModal .btnCancel:hover{background:rgba(255,255,255,.14)}
   #adminModal .err{margin-top:.5rem;color:#ff6b6b;font-size:.85rem;min-height:1.2em}
-  #adminDash{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.88);display:flex;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto;color:#fff}
+  #adminDash{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.88);display:flex;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto;color:#fff;backdrop-filter:blur(2px)}
   #adminDash.hidden{display:none}
-  #adminDash .admc{max-width:1000px;width:100%;background:#16201f;border:2px solid var(--soft);border-radius:20px;padding:2rem;margin-bottom:3rem}
+  #adminDash .admc{max-width:1000px;width:100%;background:linear-gradient(160deg,#243231,#4b5d5b);border:2px solid var(--soft);border-radius:20px;padding:2rem;margin-bottom:3rem;box-shadow:0 30px 60px rgba(0,0,0,.5)}
   #adminDash h2{font-size:1.5rem;margin:0 0 .3rem}
   #adminDash .sub{opacity:.7;font-size:.9rem;margin-bottom:1.2rem}
   .admTabs{display:flex;gap:.3rem;margin-bottom:1.2rem;border-bottom:2px solid var(--soft);flex-wrap:wrap}
-  .admTab{padding:.5rem 1.2rem;border-radius:999px 999px 0 0;background:none;border:0;cursor:pointer;font-weight:600;font-size:.9rem;color:var(--soft);border-bottom:2px solid transparent}
+  .admTab{padding:.5rem 1.2rem;border-radius:999px 999px 0 0;background:none;border:0;cursor:pointer;font-weight:600;font-size:.9rem;color:var(--soft);border-bottom:2px solid transparent;transition:all .15s}
   .admTab.active{color:#fff;border-color:var(--mid)}
+  .admTab:hover{opacity:.85}
   .admSection{display:none}
   .admSection.active{display:block}
-  .admItem{background:var(--card);border:1px solid var(--soft);border-radius:14px;padding:1rem;margin-bottom:.8rem;color:var(--ink)}
+  .admItem{background:var(--card);border:1px solid var(--soft);border-radius:16px;padding:1.2rem;margin-bottom:.8rem;color:var(--ink);transition:box-shadow .15s}
+  .admItem:hover{box-shadow:0 4px 14px rgba(0,0,0,.15)}
   .admItem .meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem;font-size:.8rem;color:#4b5d5b}
   .admItem .meta span{background:var(--soft);border-radius:999px;padding:.1rem .6rem}
   .admItem .date{margin-left:auto;background:none}
   .admItem .msg{margin:.3rem 0 .6rem;overflow-wrap:anywhere;color:var(--ink)}
   .admItem .email{margin-bottom:.5rem;font-size:.85rem}
-  .admItem button.del{background:#e01418;color:#fff;border:0;padding:.3rem .8rem;border-radius:999px;font-size:.8rem;cursor:pointer}
+  .admItem button.del{background:#e01418;color:#fff;border:0;padding:.3rem .9rem;border-radius:999px;font-size:.8rem;cursor:pointer;transition:opacity .15s}
   .admItem button.del:hover{opacity:.9}
   .admEmpty{opacity:.5;text-align:center;padding:1.5rem}
   .admControls{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-  .admSearch{padding:.5rem .9rem;border-radius:999px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font-size:.9rem}
-  #adminDash .btnClose{background:none;color:var(--soft);border:0;padding:0;font-size:1.8rem;cursor:pointer;position:absolute;top:1rem;right:1rem}
+  .admSearch{padding:.5rem .9rem;border-radius:999px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font-size:.9rem;width:100%;max-width:320px}
+  .admSearch:focus{border-color:var(--mid);outline:none}
+  #adminDash .btnClose{background:none;color:#fff;border:0;padding:0;font-size:1.9rem;cursor:pointer;position:absolute;top:1.2rem;right:1.2rem;line-height:1;opacity:.6;transition:opacity .15s}
+  #adminDash .btnClose:hover{opacity:1}
+  #adminDash .btnLogout{background:rgba(255,255,255,.08);color:var(--soft);border:1px solid var(--soft);padding:.4rem .9rem;border-radius:999px;font-size:.85rem;font-weight:600;cursor:pointer;transition:background .15s,opacity .15s}
+  #adminDash .btnLogout:hover{background:rgba(255,255,255,.12);opacity:1}
+  .admFooterLogout{margin-top:1rem}
+  #adminDash .logoutRow{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:.6rem}
+  #adminDash .logoutRow .sub{opacity:.7;font-size:.9rem;margin:0}
   .admTable{width:100%;border-collapse:collapse;font-size:.9rem}
   .admTable th,.admTable td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--soft);font-size:.85rem}
-  .admTable th{color:var(--soft);text-transform:uppercase;font-size:.75rem}
+  .admTable th{color:var(--soft);text-transform:uppercase;font-size:.75rem;letter-spacing:.04em}
   .admTable td code{background:var(--soft);padding:.1rem .4rem;border-radius:6px}
   .admTruncate{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .admStatus{display:none;align-items:center;gap:.5rem;font-size:.8rem;color:var(--soft)}
+  .admStatus.show{display:flex}
+  .admLoading{opacity:.4}
+  .admBar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem}
+  .admStatus .dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#22c56e}
+
+  /* ===== Developer console trigger ===== */
+  #devConsoleTrigger{position:fixed;left:1rem;bottom:1rem;z-index:20;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px);color:rgba(255,255,255,.85);font-size:.8rem;font-weight:600;padding:.45rem .8rem;border-radius:999px;cursor:pointer;opacity:0;transition:opacity .2s,background .15s}
+  #devConsoleTrigger.show{opacity:1}
+  #devConsoleTrigger:hover{background:rgba(255,255,255,.2);backdrop-filter:blur(6px)}
+  
   </style>
 </head>
 <body>
@@ -406,7 +429,7 @@ function home(){
   return '<div class="wrap"><div class="bar"><span class="brand">'+SITE+'</span>'+tog()+'</div><div class="intro"><h1>Apps you can download</h1><p>Small, focused tools for Windows, Linux and Android. Pick one to see what it does and grab the right build.</p></div>'+
   '<div class="tools"><input id="q" type="search" placeholder="Search software" aria-label="Search software" value="'+esc(q)+'">'+
   ["All","Windows","Linux","Android"].map(function(p){return'<button class="fl" data-pf="'+p+'" aria-pressed="'+(pf===p)+'">'+p+'</button>'}).join('')+
-  '</div><div class="cards" id="cards">'+cards()+'</div><p class="soonp">More software is on the way.</p></div>'+foot();
+  '</div><div class="cards" id="cards">'+cards()+  '</div></div>'+foot();
 }
 
 function app(a){
@@ -507,202 +530,282 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
 
   </script>
 
-  <div id="adminModal" hidden role="dialog" aria-modal="true" aria-label="Admin login">
-    <div class="adm">
-      <h2>Admin login</h2>
-      <input type="password" id="adminPass" placeholder="Enter admin token" autocomplete="off">
-      <button class="btnAdm" id="adminLoginBtn">Log in</button>
-      <button class="btnCancel" id="adminCancelBtn">Cancel</button>
-      <div class="err" id="adminErr"></div>
+   <div id="adminModal" hidden role="dialog" aria-modal="true" aria-label="Admin login">
+     <div class="adm">
+       <h2>Developer console</h2>
+       <input type="password" id="adminPass" placeholder="Enter admin token" autocomplete="off" autofocus>
+       <button class="btnAdm" id="adminLoginBtn">Log in</button>
+       <button class="btnCancel" id="adminCancelBtn">Cancel</button>
+       <div class="err" id="adminErr"></div>
+     </div>
+   </div>
+   <div id="adminDash" hidden role="dialog" aria-modal="true" aria-label="Admin dashboard">
+     <button class="btnClose" id="adminCloseDash" aria-label="Close dashboard">×</button>
+     <div class="admc">
+       <div class="logoutRow"><h2>Developer console</h2><span class="sub" id="adminSubInfo"></span></div>
+       <div class="admTabs">
+         <button class="admTab active" data-tab="reports">Problem reports</button>
+         <button class="admTab" data-tab="subscribers">Update sign-ups</button>
+         <button class="admTab" data-tab="reviews">Reviews</button>
+         <button class="btnLogout" id="adminLogoutBtn">Log out</button>
+       </div>
+       <div class="admBar">
+          <div class="admStatus" id="admStatus"><span class="dot"></span><span id="admStatusText">Loading…</span></div>
+         <input class="admSearch" id="admSearchReports" placeholder="Search reports…" type="search" autocomplete="off">
+       </div>
+       <div id="admReportsList"><p class="admEmpty">Loading…</p></div>
+       <div class="admSection" data-section="subscribers">
+         <div class="admBar">
+           <div class="admStatus" id="admStatusSub"></div>
+           <input class="admSearch" id="admSearchSubscribers" placeholder="Search subscribers…" type="search" autocomplete="off">
+         </div>
+         <table class="admTable"><thead><tr><th>App</th><th>Repository</th><th>Email</th><th>Signed up</th><th>Delete</th></tr></thead><tbody id="admSubscribersBody"></tbody></table>
+       </div>
+       <div class="admSection" data-section="reviews">
+         <div class="admBar">
+           <div class="admStatus" id="admStatusRev"></div>
+           <input class="admSearch" id="admSearchReviews" placeholder="Search reviews…" type="search" autocomplete="off">
+         </div>
+         <div id="admReviewsList"><p class="admEmpty">Loading…</p></div>
+        </div>
+        <button class="btnLogout admFooterLogout" id="adminLogoutFooter" type="button">Log out</button>
+      </div>
     </div>
-  </div>
-  <div id="adminDash" hidden role="dialog" aria-modal="true" aria-label="Admin dashboard">
-    <button class="btnClose" id="adminCloseDash" aria-label="Close">×</button>
-    <div class="admc">
-      <h2>Admin dashboard</h2>
-      <p class="sub">Problem reports, update sign-ups, and reviews. Data is live from the server.</p>
-      <div class="admTabs">
-        <button class="admTab active" data-tab="reports">Problem reports</button>
-        <button class="admTab" data-tab="subscribers">Update sign-ups</button>
-        <button class="admTab" data-tab="reviews">Reviews</button>
-      </div>
-      <div class="admSection active" data-section="reports">
-        <div class="admControls"><input class="admSearch" id="admSearchReports" placeholder="Search reports..." type="search"></div>
-        <div id="admReportsList"><p class="admEmpty">Loading…</p></div>
-      </div>
-      <div class="admSection" data-section="subscribers">
-        <div class="admControls"><input class="admSearch" id="admSearchSubscribers" placeholder="Search subscribers..." type="search"></div>
-        <table class="admTable"><thead><tr><th>App</th><th>Repository</th><th>Email</th><th>Signed up</th><th>Delete</th></tr></thead><tbody id="admSubscribersBody"></tbody></table>
-      </div>
-      <div class="admSection" data-section="reviews">
-        <div class="admControls"><input class="admSearch" id="admSearchReviews" placeholder="Search reviews..." type="search"></div>
-        <div id="admReviewsList"><p class="admEmpty">Loading…</p></div>
-      </div>
-    </div>
-  </div>
+    <button id="devConsoleTrigger" type="button" aria-label="Open developer console">Dev console</button>
 
-  <script>
-  // ===== Admin console =====
-  var adminToken = null;
-  var adminBrandClicks = 0;
+    <script>
+    // ===== Developer console =====
+   var adminToken = null;
+   var adminBrandClicks = 0;
+   var admSearchState = {};
 
-  // Easter egg: 5 clicks on the brand name opens the admin login modal
-  document.addEventListener("click", function(e) {
-    if (e.target.classList.contains("brand") || (e.target.closest && e.target.closest(".brand"))) {
-      var b = e.target.closest(".brand") || e.target;
-      if (b.textContent.includes(SITE) && !location.hash) {
-        adminBrandClicks++;
-        if (adminBrandClicks >= 5) {
-          adminBrandClicks = 0;
-          showAdminModal();
-        }
-        return;
-      }
-    }
-  });
+   // Easter egg: 5 clicks on the brand name opens the admin login modal
+   document.addEventListener("click", function(e) {
+     if (e.target.classList.contains("brand") || (e.target.closest && e.target.closest(".brand"))) {
+       var b = e.target.closest(".brand") || e.target;
+       if (b.textContent.includes(SITE) && !location.hash) {
+         adminBrandClicks++;
+         if (adminBrandClicks >= 5) {
+           adminBrandClicks = 0;
+           showAdminModal();
+         }
+         return;
+       }
+     }
+   });
 
-  function showAdminModal() {
-    $("adminModal").hidden = false;
-    $("adminPass").value = "";
-    $("adminErr").textContent = "";
-    $("adminPass").focus();
-  }
+   // Visible developer console trigger (shows on click of the brand name)
+   function devShowTrigger(){
+     var t=$("devConsoleTrigger");
+     if(!t)return;
+     t.classList.add("show");
+   }
+   var brandEl = document.querySelector(".brand");
+   if (brandEl) {
+     brandEl.addEventListener("click", function(){
+       if (!location.hash) { devShowTrigger(); }
+     });
+   }
 
-  $("adminCancelBtn").addEventListener("click", function() {
-    $("adminModal").hidden = true;
-  });
+   function showAdminModal() {
+     $("adminModal").hidden = false;
+     $("adminPass").value = "";
+     $("adminErr").textContent = "";
+     $("adminPass").focus();
+     devHideTrigger();
+   }
 
-  $("adminPass").addEventListener("keydown", function(e) {
-    if (e.key === "Escape") $("adminModal").hidden = true;
-    if (e.key === "Enter") adminLogin();
-  });
+   $("adminCancelBtn").addEventListener("click", function() {
+     $("adminModal").hidden = true;
+   });
 
-  function adminLogin() {
-    var pass = $("adminPass").value.trim();
-    if (!pass) return;
-    $("adminErr").textContent = "Checking…";
-    fetch(API_BASE + "/admin/check?token=" + encodeURIComponent(pass), { headers: { "Accept": "application/json" } })
-      .then(function(r) { return r.json(); })
+   function devHideTrigger(){
+     var t=$("devConsoleTrigger");
+     if(t)t.classList.remove("show");
+   }
+
+   function closeDashboard(){
+     $("adminDash").hidden = true;
+     adminToken = null;
+     devHideTrigger();
+   }
+
+   $("adminPass").addEventListener("keydown", function(e) {
+     if (e.key === "Escape") $("adminModal").hidden = true;
+     if (e.key === "Enter") adminLogin();
+   });
+
+   // Close modals/dashboard with Escape
+   document.addEventListener("keydown", function(e) {
+     if (e.key === "Escape") {
+       if (!$("adminDash").hidden) { closeDashboard(); return; }
+       if (!$("adminModal").hidden) { $("adminModal").hidden = true; return; }
+     }
+   });
+
+   function adminLogin() {
+     var pass = $("adminPass").value.trim();
+     if (!pass) return;
+     $("adminErr").textContent = "Checking…";
+     fetch(API_BASE + "/admin/check?token=" + encodeURIComponent(pass), { headers: { "Accept": "application/json" } })
+       .then(function(r) { return r.json(); })
+       .then(function(d) {
+         if (d.ok) {
+           adminToken = pass;
+           $("adminModal").hidden = true;
+           $("adminDash").hidden = false;
+           $("adminSubInfo").textContent = "Logged in · " + (d.user || "admin");
+           devHideTrigger();
+           loadAdminData();
+         } else {
+           $("adminErr").textContent = "Invalid token.";
+           $("adminPass").focus();
+         }
+       })
+       .catch(function() { $("adminErr").textContent = "Network error. Try again."; $("adminPass").focus(); });
+   }
+
+   $("adminLoginBtn").addEventListener("click", adminLogin);
+
+   $("adminCloseDash").addEventListener("click", closeDashboard);
+   $("adminLogoutBtn").addEventListener("click", closeDashboard);
+   $("adminLogoutFooter").addEventListener("click", closeDashboard);
+
+   // Trigger button also opens the login modal
+   $("devConsoleTrigger").addEventListener("click", showAdminModal);
+
+   // Tab switching
+   document.addEventListener("click", function(e) {
+     if (!$("adminDash").hidden) {
+       var tab = e.target.closest("[data-tab]");
+       if (tab) {
+         document.querySelectorAll(".admTab").forEach(function(t) { t.classList.toggle("active", t === tab); });
+         document.querySelectorAll("[data-section]").forEach(function(s) { s.classList.toggle("active", s.dataset.section === tab.dataset.tab); });
+       }
+     }
+   });
+
+   var adminData = { reports: [], subscribers: [], reviews: [] };
+
+   function setStatus(id, msg, ok) {
+     var s = $(id);
+     if (!s) return;
+     s.classList.toggle("show", !!msg);
+     var dot = s.querySelector(".dot");
+     if (dot) dot.style.background = ok === false ? "#ef4444" : "#22c56e";
+     var txt = s.querySelector("span:last-child");
+     if (txt) txt.textContent = msg || "";
+   }
+
+   function loadAdminData() {
+     if (!adminToken) return;
+     // mark loading
+     setStatus("admStatus", "Loading…", null);
+     $("admReportsList").classList.add("admLoading");
+     var h = { "Accept": "application/json" };
+     Promise.all([
+       fetch(API_BASE + "/admin/feedback?token=" + adminToken, { headers: h }).then(r => r.json()),
+       fetch(API_BASE + "/admin/subscribers?token=" + adminToken, { headers: h }).then(r => r.json()),
+       fetch(API_BASE + "/admin/reviews?token=" + adminToken, { headers: h }).then(r => r.json())
+     ]).then(function(d) {
+       adminData.reports = d[0] || [];
+       adminData.subscribers = d[1] || [];
+       adminData.reviews = d[2] || [];
+       renderAdminTab("reports");
+       renderAdminTab("subscribers");
+       renderAdminTab("reviews");
+       setStatus("admStatus", "Loaded " + (adminData.reports.length + adminData.subscribers.length + adminData.reviews.length) + " records", true);
+       $("admReportsList").classList.remove("admLoading");
+     }).catch(function() {
+       $("admReportsList").innerHTML = '<p class="admEmpty">Failed to load data.</p>';
+       setStatus("admStatus", "Connection failed", false);
+       $("admReportsList").classList.remove("admLoading");
+     });
+   }
+
+   function renderAdminTab(tab) {
+     if (tab === "reports") {
+       var f = (admSearchState.r = ($("admSearchReports").value || admSearchState.r || "").toLowerCase());
+       var items = adminData.reports.filter(function(r) {
+         return (r.app + " " + (r.message||"") + " " + (r.email||"")).toLowerCase().indexOf(f) > -1;
+       });
+       $("admReportsList").innerHTML = items.length ? items.map(function(r) {
+         var parts = String(r.key || "").split(":");
+         var when = parts[1] ? fmtDate(parseInt(parts[1])) : "";
+         return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span>' + (r.version?'<span>v'+esc(r.version)+'</span>':'') + (r.os?'<span>'+esc(r.os)+'</span>':'') + '<span class="date">' + esc(when) + '</span></div><div class="msg admTruncate">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'No email') + '</div><button class="del" data-type="fb" data-key="'+esc(r.key)+'">Delete</button></div>';
+       }).join("") : '<p class="admEmpty">No reports match.</p>';
+     } else if (tab === "subscribers") {
+       var s = (admSearchState.s = ($("admSearchSubscribers").value || admSearchState.s || "").toLowerCase());
+       var items2 = adminData.subscribers.filter(function(x) {
+         return (x.app + " " + (x.email||"")).toLowerCase().indexOf(s) > -1;
+       });
+       $("admSubscribersBody").innerHTML = items2.length ? items2.map(function(x) {
+         var rest = String(x.key || "").slice(4);
+         var i2 = rest.indexOf(":");
+         var repo = i2 > -1 ? rest.slice(0, i2) : rest;
+         var email = i2 > -1 ? rest.slice(i2 + 1) : "";
+         return '<tr><td>' + esc(x.app||"") + '</td><td><code>' + esc(repo) + '</code></td><td><a href="mailto:' + esc(email) + '">' + esc(email) + '</a></td><td>' + (x.t?esc(fmtDate(x.t)):"") + '</td><td><button class="del" data-type="sub" data-key="' + esc(x.key) + '">Delete</button></td></tr>';
+       }).join("") : '<tr><td colspan="5"><p class="admEmpty">No sign-ups match.</p></td></tr>';
+     } else if (tab === "reviews") {
+       var rv = (admSearchState.v = ($("admSearchReviews").value || admSearchState.v || "").toLowerCase());
+       var items3 = adminData.reviews.filter(function(r) {
+         return (r.app + " " + (r.message||"") + " " + (r.email||"")).toLowerCase().indexOf(rv) > -1;
+       });
+       var starsHtml = function(r){ var st=""; for (var i=0;i<5;i++) st+=i<(r.rating||0)?"★":"☆"; return st; };
+       $("admReviewsList").innerHTML = items3.length ? items3.map(function(r) {
+         var parts = String(r.key || "").split(":");
+         var repo = parts[1] || "";
+         var when = parts[2] ? fmtDate(parseInt(parts[2])) : "";
+         return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span><code>' + esc(repo) + '</code><span style="color:#ffd43b;font-size:1.2rem">' + starsHtml(r) + '</span><span class="date">' + esc(when) + '</span></div><div class="msg admTruncate">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'Anonymous') + '</div><button class="del" data-type="rev" data-key="'+esc(r.key)+'">Delete</button></div>';
+       }).join("") : '<p class="admEmpty">No reviews match.</p>';
+     }
+   }
+
+   // Search filtering
+   document.addEventListener("input", function(e) {
+     if (!$("adminDash").hidden) {
+       if (e.target.id === "admSearchReports") { admSearchState.r = e.target.value; renderAdminTab("reports"); }
+       if (e.target.id === "admSearchSubscribers") { admSearchState.s = e.target.value; renderAdminTab("subscribers"); }
+       if (e.target.id === "admSearchReviews") { admSearchState.v = e.target.value; renderAdminTab("reviews"); }
+     }
+   });
+
+   // Delete record
+   function delRecord(type, key, itemEl) {
+     if (!confirm("Delete this record? This can’t be undone.")) return;
+     var btn = itemEl.querySelector("button.del");
+     if (btn) { btn.disabled = true; btn.textContent = "Removing…"; }
+     fetch(API_BASE + "/admin/delete?token=" + adminToken, {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({ type: type, key: key })
+     }).then(function(r) { return r.json(); })
       .then(function(d) {
         if (d.ok) {
-          adminToken = pass;
-          $("adminModal").hidden = true;
-          $("adminDash").hidden = false;
-          loadAdminData();
+          // optimistic removal
+          if (itemEl.parentNode) itemEl.parentNode.removeChild(itemEl);
+          else loadAdminData();
+          toast("Deleted.");
         } else {
-          $("adminErr").textContent = "Invalid token.";
+          toast("Delete failed.");
+          if (btn) { btn.disabled = false; btn.textContent = "Delete"; }
         }
-      })
-      .catch(function() { $("adminErr").textContent = "Network error. Try again."; });
-  }
-
-  $("adminLoginBtn").addEventListener("click", adminLogin);
-
-  $("adminCloseDash").addEventListener("click", function() {
-    $("adminDash").hidden = true;
-    adminToken = null;
-  });
-
-  // Tab switching
-  document.addEventListener("click", function(e) {
-    if (!$("adminDash").hidden) {
-      var tab = e.target.closest("[data-tab]");
-      if (tab) {
-        document.querySelectorAll(".admTab").forEach(function(t) { t.classList.toggle("active", t === tab); });
-        document.querySelectorAll("[data-section]").forEach(function(s) { s.classList.toggle("active", s.dataset.section === tab.dataset.tab); });
-      }
-    }
-  });
-
-  var adminData = { reports: [], subscribers: [], reviews: [] };
-
-  function loadAdminData() {
-    if (!adminToken) return;
-    var h = { "Accept": "application/json" };
-    Promise.all([
-      fetch(API_BASE + "/admin/feedback?token=" + adminToken, { headers: h }).then(r => r.json()),
-      fetch(API_BASE + "/admin/subscribers?token=" + adminToken, { headers: h }).then(r => r.json()),
-      fetch(API_BASE + "/admin/reviews?token=" + adminToken, { headers: h }).then(r => r.json())
-    ]).then(function(d) {
-      adminData.reports = d[0] || [];
-      adminData.subscribers = d[1] || [];
-      adminData.reviews = d[2] || [];
-      renderAdminTab("reports");
-      renderAdminTab("subscribers");
-      renderAdminTab("reviews");
-    }).catch(function() {
-      $("admReportsList").innerHTML = '<p class="admEmpty">Failed to load data.</p>';
-    });
-  }
-
-  function renderAdminTab(tab) {
-    if (tab === "reports") {
-      var f = $("admSearchReports").value.toLowerCase();
-      var items = adminData.reports.filter(function(r) {
-        return (r.app + " " + (r.message||"") + " " + (r.email||"")).toLowerCase().indexOf(f) > -1;
+      }).catch(function() {
+        toast("Delete failed.");
+        if (btn) { btn.disabled = false; btn.textContent = "Delete"; }
       });
-      $("admReportsList").innerHTML = items.length ? items.map(function(r) {
-        var parts = String(r.key || "").split(":");
-        var when = parts[1] ? fmtDate(parseInt(parts[1])) : "";
-        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span>' + (r.version?'<span>v'+esc(r.version)+'</span>':'') + (r.os?'<span>'+esc(r.os)+'</span>':'') + '<span class="date">' + esc(when) + '</span></div><div class="msg admTruncate">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'No email') + '</div><button class="del" data-type="fb" data-key="'+esc(r.key)+'">Delete</button></div>';
-      }).join("") : '<p class="admEmpty">No reports match.</p>';
-    } else if (tab === "subscribers") {
-      var s = $("admSearchSubscribers").value.toLowerCase();
-      var items2 = adminData.subscribers.filter(function(x) {
-        return (x.app + " " + (x.email||"")).toLowerCase().indexOf(s) > -1;
-      });
-      $("admSubscribersBody").innerHTML = items2.length ? items2.map(function(x) {
-        var rest = String(x.key || "").slice(4);
-        var i2 = rest.indexOf(":");
-        var repo = i2 > -1 ? rest.slice(0, i2) : rest;
-        var email = i2 > -1 ? rest.slice(i2 + 1) : "";
-        return '<tr><td>' + esc(x.app||"") + '</td><td><code>' + esc(repo) + '</code></td><td><a href="mailto:' + esc(email) + '">' + esc(email) + '</a></td><td>' + (x.t?esc(fmtDate(x.t)):"") + '</td><td><button class="del" data-type="sub" data-key="' + esc(x.key) + '">Delete</button></td></tr>';
-      }).join("") : '<tr><td colspan="5"><p class="admEmpty">No sign-ups match.</p></td></tr>';
-    } else if (tab === "reviews") {
-      var rv = $("admSearchReviews").value.toLowerCase();
-      var items3 = adminData.reviews.filter(function(r) {
-        return (r.app + " " + (r.message||"") + " " + (r.email||"")).toLowerCase().indexOf(rv) > -1;
-      });
-      $("admReviewsList").innerHTML = items3.length ? items3.map(function(r) {
-        var parts = String(r.key || "").split(":");
-        var repo = parts[1] || "";
-        var when = parts[2] ? fmtDate(parseInt(parts[2])) : "";
-        var stars = "";
-        for (var i = 0; i < 5; i++) stars += i < (r.rating||0) ? "★" : "☆";
-        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span><code>' + esc(repo) + '</code><span style="color:#ffd43b">' + stars + '</span><span class="date">' + esc(when) + '</span></div><div class="msg admTruncate">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'Anonymous') + '</div><button class="del" data-type="rev" data-key="'+esc(r.key)+'">Delete</button></div>';
-      }).join("") : '<p class="admEmpty">No reviews match.</p>';
-    }
-  }
+   }
 
-  // Search filtering
-  document.addEventListener("input", function(e) {
-    if (!$("adminDash").hidden) {
-      if (e.target.id === "admSearchReports") renderAdminTab("reports");
-      if (e.target.id === "admSearchSubscribers") renderAdminTab("subscribers");
-      if (e.target.id === "admSearchReviews") renderAdminTab("reviews");
-    }
-  });
-
-  // Delete record
-  document.addEventListener("click", function(e) {
-    if (!$("adminDash").hidden) {
-      var btn = e.target.closest(".del[data-key]");
-      if (btn) {
-        var type = btn.dataset.type, key = btn.dataset.key;
-        if (confirm("Delete this record?")) {
-          fetch(API_BASE + "/admin/delete?token=" + adminToken, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ type: type, key: key })
-          }).then(function(r) { return r.json(); })
-           .then(function(d) {
-             if (d.ok) { loadAdminData(); toast("Deleted."); }
-             else toast("Delete failed.");
-           }).catch(function() { toast("Delete failed."); });
-        }
-      }
-    }
-  });
-  </script>
- </body>
-</html>
+   document.addEventListener("click", function(e) {
+     if (!$("adminDash").hidden) {
+       var btn = e.target.closest(".del[data-key]");
+       if (btn) {
+         var type = btn.dataset.type, key = btn.dataset.key;
+         var item = btn.closest(".admItem") || btn.closest("tr");
+         delRecord(type, key, item);
+       }
+     }
+   });
+   </script>
+  </body>
+ </html>
