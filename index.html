@@ -29,7 +29,8 @@
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--lo);color:var(--ink);font:400 1.05rem/1.55 "Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
-#view{flex:1}
+#view{flex:1;display:flex;flex-direction:column}
+#view>.wrap{width:100%}
 a{color:inherit}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid currentColor;outline-offset:3px}
@@ -113,8 +114,13 @@ figcaption{padding-top:.6rem;font-size:.95rem;opacity:.85}
 .nf{padding-block:5rem}
 .nf h1{font-size:clamp(2rem,5vw,3.2rem)}
 .nf a{display:inline-block;margin-top:1.2rem}
-footer{padding-block:2rem;border-top:2px solid var(--soft);display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;font-size:.95rem}
-footer span{margin-left:auto;opacity:.75}
+footer.wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.4rem 1.5rem;margin-top:auto;padding-block:1.1rem 1.25rem;border-top:2px solid var(--soft);font-size:.9rem;line-height:1.3}
+footer .fcenter{display:flex;align-items:baseline;gap:.5rem}
+footer .fbrand{font-weight:800;font-size:1rem;letter-spacing:-.02em}
+footer .fyear{opacity:.6}
+footer .frow{display:flex;gap:1.25rem}
+footer a{color:var(--mid);text-decoration:none;font-weight:600}
+footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:.25em}
 .toast{position:fixed;left:50%;bottom:calc(1.5rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);padding:.7rem 1.2rem;border-radius:999px;background:#fff;color:#111;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.35);z-index:30}
 #lb{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;gap:1rem;padding:3.5rem 1rem 2rem;color:#fff}
 #lbc{width:min(92vw,1000px)}
@@ -161,7 +167,7 @@ button.btn{border:0;font:inherit;font-weight:600;cursor:pointer}
 .review .rv{font-size:1.1rem;color:#ffd43b;margin-bottom:.5rem}
 .review p{margin:.3rem 0;overflow-wrap:anywhere}
 .review .rwho{font-size:.8rem;color:var(--ink);margin-top:.5rem}
-.soon{opacity:.75;border-style:dashed}.soonp{margin:-2.5rem 0 3rem;opacity:.7}
+.soon{opacity:.75;border-style:dashed}
 
   /* ===== Admin console ===== */
   #adminModal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;color:#fff}
@@ -404,13 +410,13 @@ function cards(){
 function tog(){return '<button class="tog" id="tog">Theme: '+th()+'</button>'}
 function foot(){
   var l=FOOT.filter(function(f){return f[1]}).map(function(f){return'<a href="'+esc(f[1])+'">'+f[0]+'</a>'}).join('');
-  return '<footer class="wrap">'+l+'<span>© '+new Date().getFullYear()+' '+SITE+'</span></footer>';
+  return '<footer class="wrap"><div class="fcenter"><span class="fbrand">'+SITE+'</span><span class="fyear">© '+new Date().getFullYear()+'</span></div><div class="frow">'+l+'</div></footer>';
 }
 function home(){
   return '<div class="wrap"><div class="bar"><span class="brand">'+SITE+'</span>'+tog()+'</div><div class="intro"><h1>Apps you can download</h1><p>Small, focused tools for Windows, Linux and Android. Pick one to see what it does and grab the right build.</p></div>'+
   '<div class="tools"><input id="q" type="search" placeholder="Search software" aria-label="Search software" value="'+esc(q)+'">'+
   ["All","Windows","Linux","Android"].map(function(p){return'<button class="fl" data-pf="'+p+'" aria-pressed="'+(pf===p)+'">'+p+'</button>'}).join('')+
-  '</div><div class="cards" id="cards">'+cards()+'</div><p class="soonp">More software is on the way.</p></div>'+foot();
+  '</div><div class="cards" id="cards">'+cards()+'</div></div>'+foot();
 }
 
 function app(a){
