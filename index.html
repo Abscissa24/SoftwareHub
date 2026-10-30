@@ -169,44 +169,74 @@ button.btn{border:0;font:inherit;font-weight:600;cursor:pointer}
 .review .rwho{font-size:.8rem;color:var(--ink);margin-top:.5rem}
 .soon{opacity:.75;border-style:dashed}
 
-  /* ===== Admin console ===== */
-  #adminModal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;color:#fff}
-  #adminModal.hidden{display:none}
-  #adminModal .adm{max-width:420px;width:100%;background:#16201f;border:2px solid var(--soft);border-radius:20px;padding:1.8rem}
-  #adminModal h2{font-size:1.4rem;margin:0 0 1rem}
-  #adminModal input{padding:.65rem 1rem;border-radius:12px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font:inherit;width:100%;margin-bottom:1rem}
-  #adminModal .btnAdm{padding:.6rem 1.2rem;border-radius:999px;background:var(--g);color:#fff;font-weight:600;border:0;width:100%;margin-bottom:.6rem}
-  #adminModal .btnCancel{background:none;color:var(--soft)}
-  #adminModal .err{margin-top:.5rem;color:#ff6b6b;font-size:.85rem;min-height:1.2em}
-  #adminDash{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.88);display:flex;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto;color:#fff}
-  #adminDash.hidden{display:none}
-  #adminDash .admc{max-width:1000px;width:100%;background:#16201f;border:2px solid var(--soft);border-radius:20px;padding:2rem;margin-bottom:3rem}
-  #adminDash h2{font-size:1.5rem;margin:0 0 .3rem}
-  #adminDash .sub{opacity:.7;font-size:.9rem;margin-bottom:1.2rem}
-  .admTabs{display:flex;gap:.3rem;margin-bottom:1.2rem;border-bottom:2px solid var(--soft);flex-wrap:wrap}
-  .admTab{padding:.5rem 1.2rem;border-radius:999px 999px 0 0;background:none;border:0;cursor:pointer;font-weight:600;font-size:.9rem;color:var(--soft);border-bottom:2px solid transparent}
-  .admTab.active{color:#fff;border-color:var(--mid)}
+  /* ===== Developer console ===== */
+  html:has(#adminDash:not([hidden])),html:has(#adminModal:not([hidden])){overflow:hidden}
+  #adminModal,#adminDash{position:fixed;inset:0;z-index:100;display:flex;justify-content:center;color:var(--ink);background:rgba(8,14,13,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:calc(clamp(.6rem,3vw,2rem) + env(safe-area-inset-top,0px)) clamp(.6rem,3vw,2rem) calc(clamp(.6rem,3vw,2rem) + env(safe-area-inset-bottom,0px))}
+  #adminModal{align-items:center}
+  #adminDash{align-items:stretch}
+  #toast{z-index:120}
+  #adminModal,#adminDash{--dng:light-dark(#c9252b,#ff7b80)}
+  .adm{width:100%;max-width:400px;background:var(--card);border:2px solid var(--soft);border-radius:26px;padding:1.8rem;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+  .admIco{display:grid;place-items:center;width:46px;height:46px;border-radius:24%;background:var(--g);color:#fff;margin-bottom:1rem}
+  .adm h2{font-size:1.6rem;line-height:1.1}
+  .adm .sub,.admc .sub{margin:.35rem 0 0;font-size:.95rem;opacity:.75}
+  .admPw{position:relative;margin-top:1.3rem}
+  .adm input,.admSearch{width:100%;padding:.65rem 1.1rem;border-radius:999px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font:inherit}
+  .adm input{padding-right:4.6rem}
+  .adm input:focus,.admSearch:focus{border-color:var(--mid);outline:none}
+  .admShow{position:absolute;right:.45rem;top:50%;transform:translateY(-50%);padding:.2rem .75rem;border-radius:999px;border:0;background:var(--soft);font-size:.82rem;font-weight:600}
+  .adm .err{min-height:1.4em;margin:.6rem .3rem 0;color:var(--dng);font-size:.9rem;font-weight:600}
+  .admRow{display:flex;gap:.6rem;margin-top:.6rem}
+  .admBtn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem 1.3rem;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--lo);font-weight:600;font-size:.95rem;white-space:nowrap;transition:transform .2s,border-color .2s,opacity .2s}
+  .admBtn:hover{transform:translateY(-2px)}
+  .admBtn.ghost{background:none;color:var(--ink);border-color:var(--soft)}
+  .admBtn.ghost:hover{border-color:var(--mid)}
+  .admBtn:disabled{opacity:.6;cursor:wait;transform:none}
+  .adm .admBtn{flex:1}
+  .admc{width:100%;max-width:1040px;margin:0 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--lo);border:2px solid var(--soft);border-radius:26px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+  .admHead{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding:1.5rem 1.6rem 1.1rem}
+  .admHead h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.1}
+  .admHead .badge{font-size:.72rem;margin-left:.4rem;vertical-align:middle}
+  .admAct{display:flex;gap:.5rem}
+  .admAct .admBtn{padding:.4rem 1rem;font-size:.9rem}
+  .admTabs{display:flex;gap:.5rem;padding:0 1.6rem 1rem;border-bottom:2px solid var(--soft);overflow-x:auto}
+  .admTab{flex:none;padding:.45rem 1rem;border-radius:999px;border:2px solid var(--soft);background:none;font-weight:600;font-size:.95rem;transition:border-color .2s}
+  .admTab:hover{border-color:var(--mid)}
+  .admTab.active{background:var(--ink);color:var(--lo);border-color:var(--ink)}
+  .admTab .cnt{margin-left:.45rem;padding:.02rem .5rem;border-radius:999px;background:var(--soft);color:var(--ink);font-size:.78rem}
+  .admTab.active .cnt{background:color-mix(in srgb,var(--lo) 25%,transparent);color:var(--lo)}
+  .admBody{flex:1;min-height:0;overflow-y:auto;padding:1.2rem 1.6rem 1.6rem}
   .admSection{display:none}
   .admSection.active{display:block}
-  .admItem{background:var(--card);border:1px solid var(--soft);border-radius:14px;padding:1rem;margin-bottom:.8rem;color:var(--ink)}
-  .admItem .meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem;font-size:.8rem;color:var(--ink)}
-  .admItem .meta span{background:var(--soft);border-radius:999px;padding:.1rem .6rem}
-  .admItem .date{margin-left:auto;background:none}
-  .admItem .msg{margin:.3rem 0 .6rem;overflow-wrap:anywhere;color:var(--ink)}
-  .admItem .email{margin-bottom:.5rem;font-size:.85rem;color:var(--ink)}
-  .admItem button.del{background:#e01418;color:#fff;border:0;padding:.3rem .8rem;border-radius:999px;font-size:.8rem;cursor:pointer}
-  .admItem button.del:hover{opacity:.9}
-  .admEmpty{opacity:.5;text-align:center;padding:1.5rem}
-  .admControls{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:.8rem}
-  .admSearch{padding:.5rem .9rem;border-radius:999px;border:2px solid var(--soft);background:var(--lo);color:var(--ink);font-size:.9rem}
-  #adminDash .btnSend{padding:.5rem 1rem;border-radius:999px;background:var(--g);color:#fff;border:0;cursor:pointer;font-size:.85rem;white-space:nowrap}
-  #adminDash .btnSend:hover{opacity:.9}
-  #adminDash .btnSend:disabled{opacity:.6;cursor:wait}
-  #adminDash .btnClose{background:none;color:var(--soft);border:0;padding:0;font-size:1.8rem;cursor:pointer;position:absolute;top:1rem;right:1rem}
-  .admTable{width:100%;border-collapse:collapse;font-size:.9rem}
-  .admTable th,.admTable td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--soft);font-size:.85rem}
-  .admTable th{color:var(--soft);text-transform:uppercase;font-size:.75rem}
-  .admTable td code{background:var(--soft);padding:.1rem .4rem;border-radius:6px}
+  .admControls{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-bottom:1rem}
+  .admSearch{flex:1 1 220px;max-width:380px}
+  .admControls .admAct{margin-left:auto}
+  .admItem{background:var(--card);border:2px solid var(--soft);border-radius:22px;padding:1.1rem 1.3rem;margin-bottom:.8rem;transition:border-color .2s}
+  .admItem:hover{border-color:var(--mid)}
+  .admItem .meta{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;opacity:1;font-size:.78rem}
+  .admItem .app{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;margin-right:.3rem}
+  .admItem .meta span:not(.date):not(.rate),.admItem .meta code{flex:none;padding:.1rem .65rem;border-radius:999px;background:var(--soft);color:var(--ink);font:600 .78rem/1.5 inherit}
+  .admItem .meta code{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:400}
+  .admItem .date{margin-left:auto;font-size:.82rem;opacity:.65}
+  .admItem .rate{color:light-dark(#d98a00,#ffd43b);letter-spacing:.06em;font-size:.9rem}
+  .admItem .msg{margin:.7rem 0 .9rem;overflow-wrap:anywhere}
+  .admItem .foot{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+  .admItem .email{font-size:.9rem}
+  .admItem a,.admTable a{color:var(--mid);font-weight:600;text-underline-offset:.2em}
+  button.del{padding:.25rem .85rem;border-radius:999px;border:2px solid var(--dng);background:none;color:var(--dng);font-size:.82rem;font-weight:600;transition:background .2s,color .2s}
+  button.del:hover,button.del.armed{background:var(--dng);color:var(--card)}
+  button.del:disabled{opacity:.6;cursor:wait}
+  .admEmpty{margin:0;padding:2.5rem 1rem;text-align:center;opacity:.65}
+  .admSection>div>.admEmpty{border:2px dashed var(--soft);border-radius:22px}
+  .admTableWrap{overflow-x:auto;background:var(--card);border:2px solid var(--soft);border-radius:22px}
+  .admTable{width:100%;border-collapse:collapse}
+  .admTable th,.admTable td{padding:.75rem 1rem;text-align:left;font-size:.9rem;white-space:nowrap}
+  .admTable th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mid)}
+  .admTable td{border-top:1px solid var(--soft)}
+  .admTable tbody tr:hover{background:var(--lo)}
+  .admTable td code{flex:none;background:var(--soft);color:var(--ink);padding:.1rem .5rem;border-radius:8px}
+  .admTable .admEmpty{white-space:normal}
+  @media (max-width:600px){.admHead,.admBody{padding-inline:1.1rem}.admTabs{padding-inline:1.1rem}.admControls .admAct{margin-left:0;width:100%}.admControls .admAct .admBtn{flex:1}}
   </style>
 </head>
 <body>
@@ -517,36 +547,53 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
 
   </script>
 
-  <div id="adminModal" hidden role="dialog" aria-modal="true" aria-label="Admin login">
+  <div id="adminModal" hidden role="dialog" aria-modal="true" aria-labelledby="admLoginTitle">
     <div class="adm">
-      <h2>Admin login</h2>
-      <input type="password" id="adminPass" placeholder="Enter admin token" autocomplete="off">
-      <button class="btnAdm" id="adminLoginBtn">Log in</button>
-      <button class="btnCancel" id="adminCancelBtn">Cancel</button>
-      <div class="err" id="adminErr"></div>
+      <div class="admIco" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      <h2 id="admLoginTitle">Developer console</h2>
+      <p class="sub">Enter your admin token to continue.</p>
+      <div class="admPw">
+        <input type="password" id="adminPass" placeholder="Admin token" aria-label="Admin token" autocomplete="off">
+        <button type="button" class="admShow" id="adminShow" aria-pressed="false">Show</button>
+      </div>
+      <div class="err" id="adminErr" role="alert"></div>
+      <div class="admRow">
+        <button class="admBtn" id="adminLoginBtn">Log in</button>
+        <button class="admBtn ghost" id="adminCancelBtn">Cancel</button>
+      </div>
     </div>
   </div>
-  <div id="adminDash" hidden role="dialog" aria-modal="true" aria-label="Admin dashboard">
-    <button class="btnClose" id="adminCloseDash" aria-label="Close">×</button>
+  <div id="adminDash" hidden role="dialog" aria-modal="true" aria-label="Developer console">
     <div class="admc">
-      <h2>Admin dashboard</h2>
-      <p class="sub">Problem reports, update sign-ups, and reviews. Data is live from the server.</p>
+      <div class="admHead">
+        <div>
+          <h2>Developer console <span class="badge">Live</span></h2>
+          <p class="sub" id="admStats">Loading live data…</p>
+        </div>
+        <div class="admAct">
+          <button class="admBtn ghost" id="admRefresh" type="button">Refresh</button>
+          <button class="admBtn ghost" id="adminCloseDash" type="button">Close</button>
+        </div>
+      </div>
       <div class="admTabs">
-        <button class="admTab active" data-tab="reports">Problem reports</button>
-        <button class="admTab" data-tab="subscribers">Update sign-ups</button>
-        <button class="admTab" data-tab="reviews">Reviews</button>
+        <button class="admTab active" data-tab="reports">Problem reports<span class="cnt" id="admCnt-reports">0</span></button>
+        <button class="admTab" data-tab="subscribers">Update sign-ups<span class="cnt" id="admCnt-subscribers">0</span></button>
+        <button class="admTab" data-tab="reviews">Reviews<span class="cnt" id="admCnt-reviews">0</span></button>
       </div>
-      <div class="admSection active" data-section="reports">
-        <div class="admControls"><input class="admSearch" id="admSearchReports" placeholder="Search reports..." type="search"></div>
-        <div id="admReportsList"><p class="admEmpty">Loading…</p></div>
-      </div>
-       <div class="admSection" data-section="subscribers">
-         <div class="admControls"><input class="admSearch" id="admSearchSubscribers" placeholder="Search subscribers..." type="search"><button class="btnSend" id="admSendBtn">Send update emails now</button></div>
-         <table class="admTable"><thead><tr><th>App</th><th>Repository</th><th>Email</th><th>Signed up</th><th>Delete</th></tr></thead><tbody id="admSubscribersBody"></tbody></table>
-       </div>
-      <div class="admSection" data-section="reviews">
-        <div class="admControls"><input class="admSearch" id="admSearchReviews" placeholder="Search reviews..." type="search"></div>
-        <div id="admReviewsList"><p class="admEmpty">Loading…</p></div>
+      <div class="admBody">
+        <div class="admSection active" data-section="reports">
+          <div class="admControls"><input class="admSearch" id="admSearchReports" placeholder="Search reports" aria-label="Search reports" type="search"></div>
+          <div id="admReportsList"><p class="admEmpty">Loading…</p></div>
+        </div>
+        <div class="admSection" data-section="subscribers">
+          <div class="admControls"><input class="admSearch" id="admSearchSubscribers" placeholder="Search sign-ups" aria-label="Search sign-ups" type="search">
+            <div class="admAct"><button class="admBtn ghost" id="admExport" type="button">Export CSV</button><button class="admBtn" id="admSendBtn" type="button">Send update emails now</button></div></div>
+          <div class="admTableWrap"><table class="admTable"><thead><tr><th>App</th><th>Repository</th><th>Email</th><th>Signed up</th><th></th></tr></thead><tbody id="admSubscribersBody"></tbody></table></div>
+        </div>
+        <div class="admSection" data-section="reviews">
+          <div class="admControls"><input class="admSearch" id="admSearchReviews" placeholder="Search reviews" aria-label="Search reviews" type="search"></div>
+          <div id="admReviewsList"><p class="admEmpty">Loading…</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -574,6 +621,9 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
   function showAdminModal() {
     $("adminModal").hidden = false;
     $("adminPass").value = "";
+    $("adminPass").type = "password";
+    $("adminShow").textContent = "Show";
+    $("adminShow").setAttribute("aria-pressed", "false");
     $("adminErr").textContent = "";
     $("adminPass").focus();
   }
@@ -626,7 +676,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
 
   var adminData = { reports: [], subscribers: [], reviews: [] };
 
-  function loadAdminData() {
+  function loadAdminData(done) {
     if (!adminToken) return;
     var h = { "Accept": "application/json" };
     Promise.all([
@@ -640,9 +690,23 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
       renderAdminTab("reports");
       renderAdminTab("subscribers");
       renderAdminTab("reviews");
+      updateAdminMeta();
     }).catch(function() {
       $("admReportsList").innerHTML = '<p class="admEmpty">Failed to load data.</p>';
-    });
+      $("admReviewsList").innerHTML = '<p class="admEmpty">Failed to load data.</p>';
+      $("admSubscribersBody").innerHTML = '<tr><td colspan="5"><p class="admEmpty">Failed to load data.</p></td></tr>';
+      $("admStats").textContent = "Couldn’t load data. Try Refresh.";
+    }).then(function() { if (done) done(); });
+  }
+
+  function updateAdminMeta() {
+    var r = adminData.reports.length, s = adminData.subscribers.length, v = adminData.reviews.length;
+    $("admCnt-reports").textContent = r;
+    $("admCnt-subscribers").textContent = s;
+    $("admCnt-reviews").textContent = v;
+    var rated = adminData.reviews.filter(function(x) { return x.rating > 0; });
+    var avg = rated.length ? (rated.reduce(function(n, x) { return n + x.rating; }, 0) / rated.length).toFixed(1) : "";
+    $("admStats").textContent = r + " report" + (r === 1 ? "" : "s") + " · " + s + " sign-up" + (s === 1 ? "" : "s") + " · " + v + " review" + (v === 1 ? "" : "s") + (avg ? " · ★ " + avg + " average" : "");
   }
 
   function renderAdminTab(tab) {
@@ -654,7 +718,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
       $("admReportsList").innerHTML = items.length ? items.map(function(r) {
         var parts = String(r.key || "").split(":");
         var when = parts[1] ? fmtDate(parseInt(parts[1])) : "";
-        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span>' + (r.version?'<span>v'+esc(r.version)+'</span>':'') + (r.os?'<span>'+esc(r.os)+'</span>':'') + '<span class="date">' + esc(when) + '</span></div><div class="msg">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'No email') + '</div><button class="del" data-type="fb" data-key="'+esc(r.key)+'">Delete</button></div>';
+        return '<div class="admItem"><div class="meta"><strong class="app">' + esc(r.app||"") + '</strong>' + (r.version?'<span>v'+esc(r.version)+'</span>':'') + (r.os?'<span>'+esc(r.os)+'</span>':'') + '<span class="date">' + esc(when) + '</span></div><div class="msg">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="foot"><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'No email') + '</div><button class="del" data-type="fb" data-key="'+esc(r.key)+'">Delete</button></div></div>';
       }).join("") : '<p class="admEmpty">No reports match.</p>';
     } else if (tab === "subscribers") {
       var s = $("admSearchSubscribers").value.toLowerCase();
@@ -679,7 +743,7 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
         var when = parts[2] ? fmtDate(parseInt(parts[2])) : "";
         var stars = "";
         for (var i = 0; i < 5; i++) stars += i < (r.rating||0) ? "★" : "☆";
-        return '<div class="admItem"><div class="meta"><span>' + esc(r.app||"") + '</span><code>' + esc(repo) + '</code><span style="color:#ffd43b">' + stars + '</span><span class="date">' + esc(when) + '</span></div><div class="msg">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'Anonymous') + '</div><button class="del" data-type="rev" data-key="'+esc(r.key)+'">Delete</button></div>';
+        return '<div class="admItem"><div class="meta"><strong class="app">' + esc(r.app||"") + '</strong><code>' + esc(repo) + '</code><span class="rate" aria-label="' + (r.rating||0) + ' out of 5">' + stars + '</span><span class="date">' + esc(when) + '</span></div><div class="msg">' + esc(r.message||"").replace(/\n/g,"<br>") + '</div><div class="foot"><div class="email">' + (r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'Anonymous') + '</div><button class="del" data-type="rev" data-key="'+esc(r.key)+'">Delete</button></div></div>';
       }).join("") : '<p class="admEmpty">No reviews match.</p>';
     }
   }
@@ -693,26 +757,33 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
     }
   });
 
-  // Delete record
+  // Delete record (first click arms the button, second click deletes)
   document.addEventListener("click", function(e) {
-    if (!$("adminDash").hidden) {
-      var btn = e.target.closest(".del[data-key]");
-      if (btn) {
-        var type = btn.dataset.type, key = btn.dataset.key;
-        if (confirm("Delete this record?")) {
-          fetch(API_BASE + "/admin/delete?token=" + adminToken, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ type: type, key: key })
-          }).then(function(r) { return r.json(); })
-           .then(function(d) {
-             if (d.ok) { loadAdminData(); toast("Deleted."); }
-             else toast("Delete failed.");
-           }).catch(function() { toast("Delete failed."); });
-        }
-      }
-     }
-   });
+    if ($("adminDash").hidden) return;
+    var btn = e.target.closest(".del[data-key]");
+    if (!btn) return;
+    if (!btn.classList.contains("armed")) {
+      btn.classList.add("armed");
+      btn.textContent = "Confirm delete";
+      setTimeout(function() {
+        if (btn.isConnected && btn.classList.contains("armed")) { btn.classList.remove("armed"); btn.textContent = "Delete"; }
+      }, 3000);
+      return;
+    }
+    var type = btn.dataset.type, key = btn.dataset.key;
+    btn.disabled = true;
+    fetch(API_BASE + "/admin/delete?token=" + adminToken, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: type, key: key })
+    }).then(function(r) { return r.json(); })
+     .then(function(d) {
+       if (d.ok) { loadAdminData(); toast("Deleted."); }
+       else { btn.disabled = false; toast("Delete failed."); }
+     }).catch(function() { btn.disabled = false; toast("Delete failed."); });
+  });
+
+  // Send update emails now   });
 
   // Send update emails now — force-checks GitHub for new releases, emails
   // subscribers if any are found, then refreshes the displayed release data.
@@ -743,6 +814,49 @@ APPS.forEach(function(a){if(!a.soon)load(a);loadReviews(a)});
         btn.disabled = false;
         toast("Failed to send emails.");
       });
+  });
+  // Console extras: refresh, CSV export, show/hide token, Esc and backdrop close
+  $("admRefresh").addEventListener("click", function() {
+    var b = this;
+    b.disabled = true; b.textContent = "Refreshing…";
+    loadAdminData(function() { b.disabled = false; b.textContent = "Refresh"; });
+  });
+
+  $("admExport").addEventListener("click", function() {
+    if (!adminData.subscribers.length) { toast("Nothing to export."); return; }
+    var cell = function(v) {
+      v = String(v == null ? "" : v);
+      if (/^[=+\-@\t\r]/.test(v)) v = "'" + v;
+      return '"' + v.replace(/"/g, '""') + '"';
+    };
+    var rows = [["App", "Repository", "Email", "Signed up"]];
+    adminData.subscribers.forEach(function(x) {
+      var rest = String(x.key || "").slice(4), i = rest.indexOf(":");
+      rows.push([x.app || "", i > -1 ? rest.slice(0, i) : rest, i > -1 ? rest.slice(i + 1) : "", x.t ? fmtDate(x.t) : ""]);
+    });
+    var csv = "\ufeff" + rows.map(function(r) { return r.map(cell).join(","); }).join("\r\n");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "subscribers-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+    toast("Exported " + adminData.subscribers.length + " sign-up" + (adminData.subscribers.length > 1 ? "s" : "") + ".");
+  });
+
+  $("adminShow").addEventListener("click", function() {
+    var p = $("adminPass"), show = p.type === "password";
+    p.type = show ? "text" : "password";
+    this.textContent = show ? "Hide" : "Show";
+    this.setAttribute("aria-pressed", String(show));
+    p.focus();
+  });
+
+  $("adminModal").addEventListener("click", function(e) { if (e.target === this) $("adminCancelBtn").click(); });
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape") return;
+    if (!$("adminDash").hidden) $("adminCloseDash").click();
+    else if (!$("adminModal").hidden) $("adminCancelBtn").click();
   });
   </script>
  </body>
